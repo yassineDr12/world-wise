@@ -1,4 +1,3 @@
-import React from "react";
 import { Typography, Box, Container, Grid, Divider } from "@mui/material";
 import { motion } from "framer-motion";
 import Background from "../components/Background";

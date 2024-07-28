@@ -1,4 +1,4 @@
-import { Box, Container, Typography, Link, AppBar, Toolbar } from "@mui/material";
+import { Container, Typography, Link, AppBar, Toolbar } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 const Scratch = () => {
