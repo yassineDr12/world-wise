@@ -1,5 +1,4 @@
 import { Box, Container, Typography, Link } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -9,10 +8,7 @@ const Footer = () => {
           © {new Date().getFullYear()} WorldWise - Keep track of your adventures
         </Typography>
         <Typography variant="body2" align="center" sx={{ mt: 1 }}>
-          <Link component={RouterLink} to="/about" color="inherit" sx={{ mr: 1 }}>
-            About
-          </Link>
-          |
+          Made with ❤️ by Yassine Drafate
           <Link
             href="https://github.com/yassineDr12/world-wise"
             target="_blank"

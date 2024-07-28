@@ -1,6 +1,7 @@
 import { Box, Typography, Button } from "@mui/material";
 import { styled, keyframes } from "@mui/system";
 import { Link } from "react-router-dom";
+import Background from "../components/Background";
 
 const float = keyframes`
   0% { transform: translateY(0px); }
@@ -23,45 +24,47 @@ const AnimatedTypography = styled(Typography)({
 
 const NotFound = () => {
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <AnimatedBox>
-        <AnimatedTypography variant="h1" color="primary" sx={{ fontSize: "8rem", fontWeight: "bold" }}>
-          404
-        </AnimatedTypography>
-      </AnimatedBox>
-      <Typography variant="h4" sx={{ mt: 2, mb: 4 }}>
-        Oops! Page not found
-      </Typography>
-      <Typography variant="body1" sx={{ mb: 4, textAlign: "center", maxWidth: "600px" }}>
-        It seems you've wandered off the map. Don't worry, even the best explorers get lost sometimes!
-      </Typography>
-      <Button
-        component={Link}
-        to="/"
-        variant="contained"
-        color="primary"
-        size="large"
+    <Background>
+      <Box
         sx={{
-          borderRadius: "50px",
-          padding: "10px 30px",
-          transition: "all 0.3s ease",
-          "&:hover": {
-            transform: "scale(1.05)",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
-          },
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        Back to Home
-      </Button>
-    </Box>
+        <AnimatedBox>
+          <AnimatedTypography variant="h1" color="primary" sx={{ fontSize: "8rem", fontWeight: "bold" }}>
+            404
+          </AnimatedTypography>
+        </AnimatedBox>
+        <Typography variant="h4" sx={{ mt: 2, mb: 4 }}>
+          Oops! Page not found
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 4, textAlign: "center", maxWidth: "600px" }}>
+          It seems you've wandered off the map. Don't worry, even the best explorers get lost sometimes!
+        </Typography>
+        <Button
+          component={Link}
+          to="/"
+          variant="contained"
+          color="primary"
+          size="large"
+          sx={{
+            borderRadius: "50px",
+            padding: "10px 30px",
+            transition: "all 0.3s ease",
+            "&:hover": {
+              transform: "scale(1.05)",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
+            },
+          }}
+        >
+          Back to Home
+        </Button>
+      </Box>
+    </Background>
   );
 };
 
