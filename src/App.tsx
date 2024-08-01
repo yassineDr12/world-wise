@@ -3,10 +3,11 @@ import { AnimatePresence } from "framer-motion";
 
 import Homepage from "./pages/Homepage";
 import About from "./pages/About";
-import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Pricing from "./pages/Pricing";
+import Tracker from "./pages/Tracker";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const location = useLocation();
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="about" element={<About />} />
           <Route path="pricing" element={<Pricing />} />
+          <Route path="tracker" element={<Tracker />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>

@@ -8,7 +8,11 @@ const Footer = () => {
           © {new Date().getFullYear()} WorldWise - Keep track of your adventures
         </Typography>
         <Typography variant="body2" align="center" sx={{ mt: 1 }}>
-          Made with ❤️ by Yassine Drafate
+          Made with ❤️ by
+          <Link href="https://github.com/yassineDr12" target="_blank" rel="noopener" color="inherit" sx={{ ml: 1 }}>
+            Yassine Drafate
+          </Link>{" "}
+          |
           <Link
             href="https://github.com/yassineDr12/world-wise"
             target="_blank"

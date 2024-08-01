@@ -1,6 +1,6 @@
+import AnimatedDiv from "./AnimatedDiv";
 import { Box, SxProps, Theme } from "@mui/material";
 import backgroundImage from "../assets/background.jpg";
-import { motion } from "framer-motion";
 
 const Background = ({ children, sx }: { children: React.ReactNode; sx?: SxProps<Theme> | undefined }) => {
   return (
@@ -13,14 +13,7 @@ const Background = ({ children, sx }: { children: React.ReactNode; sx?: SxProps<
         ...sx,
       }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
-      >
-        {children}
-      </motion.div>
+      <AnimatedDiv>{children}</AnimatedDiv>
     </Box>
   );
 };

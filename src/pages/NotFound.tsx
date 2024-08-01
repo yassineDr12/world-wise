@@ -52,8 +52,6 @@ const NotFound = () => {
           color="primary"
           size="large"
           sx={{
-            borderRadius: "50px",
-            padding: "10px 30px",
             transition: "all 0.3s ease",
             "&:hover": {
               transform: "scale(1.05)",
