@@ -99,22 +99,24 @@ const Menu = ({ option }: { option: "cities" | "countries" }) => {
         ))}
       </List>
       {selectedItem && (
-        <Card sx={{ mt: 2 }}>
-          <CardContent>
-            <Typography variant="h6">{selectedItem}</Typography>
-            <Typography variant="body2">
-              You went to {selectedItem} on {items.find((item) => item.name === selectedItem)?.date}
-            </Typography>
-            <Typography variant="body2" mt={1}>
-              Your notes
-            </Typography>
-            <Typography variant="body2" mt={2}>
+        <AnimatedDiv>
+          <Card sx={{ mt: 2, backgroundColor: "primary.main", color: "primary.contrastText" }}>
+            <CardContent>
+              <Typography variant="h6">{selectedItem}</Typography>
+              <Typography variant="body2">
+                You went to {selectedItem} on {items.find((item) => item.name === selectedItem)?.date}
+              </Typography>
+              <Typography variant="body2" mt={1}>
+                Your notes
+              </Typography>
               <Link href={`https://en.wikipedia.org/wiki/${selectedItem}`} target="_blank" rel="noopener">
-                Check out {selectedItem} on Wikipedia
+                <Typography variant="body2" sx={{ color: "white", textDecoration: "underline" }} mt={2}>
+                  Check out {selectedItem} on Wikipedia
+                </Typography>
               </Link>
-            </Typography>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </AnimatedDiv>
       )}
     </Box>
   );
@@ -138,7 +140,7 @@ const TrackingList = () => {
           margin: 3,
         }}
       >
-        <ToggleButtonGroup value={menu} exclusive onChange={handleAlignment} color="primary">
+        <ToggleButtonGroup value={menu} exclusive onChange={handleAlignment}>
           <ToggleButton value="cities">
             <Typography variant="subtitle2">CITIES</Typography>
           </ToggleButton>

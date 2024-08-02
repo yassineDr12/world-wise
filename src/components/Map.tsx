@@ -1,8 +1,26 @@
+import { useTheme } from "@emotion/react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import styled from "@emotion/styled";
+import { Theme } from "@mui/material";
 
 const Map = () => {
+  const theme = useTheme() as Theme;
+  const primaryColor = theme.palette.primary.main;
+  const zoomControlStyle = {
+    ".leaflet-control-zoom a": {
+      backgroundColor: primaryColor,
+      color: "white",
+      "&:hover": {
+        backgroundColor: theme.palette.primary.dark,
+      },
+    },
+  };
+  const StyledMapContainer = styled(MapContainer)`
+    ${zoomControlStyle}
+  `;
+
   return (
-    <MapContainer
+    <StyledMapContainer
       center={[51.505, -0.09]}
       zoom={13}
       scrollWheelZoom={true}
@@ -20,7 +38,7 @@ const Map = () => {
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
       </Marker>
-    </MapContainer>
+    </StyledMapContainer>
   );
 };
 
