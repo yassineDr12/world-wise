@@ -1,12 +1,18 @@
 import AnimatedDiv from "./AnimatedDiv";
-import { Box, SxProps, Theme } from "@mui/material";
-import backgroundImage from "../assets/background.jpg";
+import { Box, SxProps, Theme, useTheme } from "@mui/material";
+import backgroundImageLight from "../assets/background-light.jpg";
+import backgroundImageDark from "../assets/background-dark.jpg";
 
 const Background = ({ children, sx }: { children: React.ReactNode; sx?: SxProps<Theme> | undefined }) => {
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === "dark";
+
+  const backgroundImage = isDarkMode ? backgroundImageDark : backgroundImageLight;
+
   return (
     <Box
       sx={{
-        backgroundImage: `linear-gradient(rgb(211,238,213, 0.5), rgb(211,238,213, 0.5)), url(${backgroundImage})`,
+        backgroundImage: `linear-gradient(${theme.palette.background.default}80, ${theme.palette.background.default}80), url(${backgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -20,4 +26,5 @@ const Background = ({ children, sx }: { children: React.ReactNode; sx?: SxProps<
     </Box>
   );
 };
+
 export default Background;

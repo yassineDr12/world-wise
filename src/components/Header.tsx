@@ -1,7 +1,10 @@
-import React from "react";
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import { FC, useContext } from "react";
+import { AppBar, Toolbar, Typography, Button, Box, useTheme, IconButton } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { ColorModeContext } from "../contexts/ThemeContext";
 
 const navStyle = ({
   isActive,
@@ -20,7 +23,9 @@ const navStyle = ({
   };
 };
 
-const Header: React.FC = () => {
+const Header: FC = () => {
+  const colorMode = useContext(ColorModeContext);
+  const theme = useTheme();
   return (
     <AppBar position="static" color="primary" elevation={10}>
       <Toolbar>
@@ -45,6 +50,9 @@ const Header: React.FC = () => {
             TRACKER
           </NavLink>
         </Button>
+        <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+          {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
       </Toolbar>
     </AppBar>
   );
