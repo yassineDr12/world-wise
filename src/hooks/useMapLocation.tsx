@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { LocationDetails, MapLocation } from "../types/VisitedListItem";
+import { LocationDetails, MapLocation } from "../types/Data";
 
 const useMapLocation = () => {
   const [selectedLocation, setSelectedLocation] = useState<MapLocation | null>(null);

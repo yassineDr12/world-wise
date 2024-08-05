@@ -14,9 +14,10 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import AnimatedDiv from "./AnimatedDiv";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { visitedItems } from "../data/visitedList";
-import { VisitedListItem } from "../types/VisitedListItem";
+import { VisitedListItem } from "../types/Data";
+import { ITrackingListMenu } from "../types/Components";
 
 const renderCitiesList = ({
   handleItemClick,
@@ -89,13 +90,17 @@ const renderCountriesList = ({ theme }: { theme: Theme }) => {
   );
 };
 
-const TrackingListMenu = ({ option }: { option: "countries" | "cities" }) => {
+const TrackingListMenu: FC<ITrackingListMenu> = ({ option, setSelectedLocation }) => {
   const theme = useTheme();
   const [selectedItem, setSelectedItem] = useState<VisitedListItem | null>(null);
 
   useEffect(() => {
     option === "countries" && setSelectedItem(null);
   }, [option]);
+
+  useEffect(() => {
+    selectedItem && setSelectedLocation({ lat: selectedItem.lat, lng: selectedItem.lng });
+  }, [selectedItem, setSelectedLocation]);
 
   const handleItemClick = (item: VisitedListItem) => {
     setSelectedItem(item);
@@ -105,7 +110,7 @@ const TrackingListMenu = ({ option }: { option: "countries" | "cities" }) => {
     <Box m={3} width="100%">
       <List
         sx={{
-          height: option === "countries" ? "585px" : "400px",
+          height: option === "countries" ? "585px" : "415px",
           overflowY: "auto",
           "&::-webkit-scrollbar": {
             width: "8px",
@@ -135,7 +140,7 @@ const TrackingListMenu = ({ option }: { option: "countries" | "cities" }) => {
                 {selectedItem.notes}
               </Typography>
               <Link href={selectedItem.wiki} target="_blank" rel="noopener">
-                <Typography variant="body2" sx={{ color: "white", textDecoration: "underline" }} mt={2}>
+                <Typography variant="body2" sx={{ color: "primary.contrastText", textDecoration: "underline" }} mt={2}>
                   Check out {selectedItem.city} on Wikipedia
                 </Typography>
               </Link>

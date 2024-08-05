@@ -2,8 +2,9 @@ import { Box, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material"
 import { FC, useState } from "react";
 import AnimatedDiv from "./AnimatedDiv";
 import TrackingListMenu from "./TrackingListMenu";
+import { ITrackingList } from "../types/Components";
 
-const TrackingList: FC = () => {
+const TrackingList: FC<ITrackingList> = ({ setSelectedLocation }) => {
   const [menu, setMenu] = useState<"countries" | "cities">("cities");
 
   const handleAlignment = (_: React.MouseEvent<HTMLElement>, newMenu: "countries" | "cities") => {
@@ -29,7 +30,7 @@ const TrackingList: FC = () => {
             <Typography variant="subtitle2">COUNTRIES</Typography>
           </ToggleButton>
         </ToggleButtonGroup>
-        <TrackingListMenu option={menu} />
+        <TrackingListMenu option={menu} setSelectedLocation={setSelectedLocation} />
       </Box>
     </AnimatedDiv>
   );

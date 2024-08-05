@@ -2,10 +2,10 @@ import { useTheme } from "@emotion/react";
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from "react-leaflet";
 import styled from "@emotion/styled";
 import { Theme } from "@mui/material";
-import useMapLocation from "../hooks/useMapLocation";
 import { FC } from "react";
+import { IMap } from "../types/Components";
 
-const Map: FC = () => {
+const Map: FC<IMap> = ({ selectedLocation, setAddItemFlag, locationDetails, setSelectedLocation }) => {
   const theme = useTheme() as Theme;
   const primaryColor = theme.palette.primary.main;
   const zoomControlStyle = {
@@ -20,12 +20,12 @@ const Map: FC = () => {
   const StyledMapContainer = styled(MapContainer)`
     ${zoomControlStyle}
   `;
-  const { selectedLocation, setSelectedLocation, locationDetails } = useMapLocation();
 
   function MapEvents() {
     useMapEvents({
       click(e) {
         setSelectedLocation(e.latlng);
+        setAddItemFlag(true);
       },
     });
     return null;

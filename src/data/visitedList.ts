@@ -1,4 +1,4 @@
-import { VisitedListItem } from "../types/VisitedListItem";
+import { VisitedListItem } from "../types/Data";
 
 export const visitedItems: VisitedListItem[] = [
   {
