@@ -8,11 +8,13 @@ export interface IMap {
 }
 
 export interface ITrackingList {
+  visitedItems: VisitedListItem[];
   setSelectedLocation: React.Dispatch<React.SetStateAction<MapLocation | null>>;
 }
 
 export interface ITrackingListMenu {
   option: "cities" | "countries";
+  visitedItems: VisitedListItem[];
   setSelectedLocation: React.Dispatch<React.SetStateAction<MapLocation | null>>;
 }
 

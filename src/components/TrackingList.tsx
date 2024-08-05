@@ -4,7 +4,7 @@ import AnimatedDiv from "./AnimatedDiv";
 import TrackingListMenu from "./TrackingListMenu";
 import { ITrackingList } from "../types/Components";
 
-const TrackingList: FC<ITrackingList> = ({ setSelectedLocation }) => {
+const TrackingList: FC<ITrackingList> = ({ visitedItems, setSelectedLocation }) => {
   const [menu, setMenu] = useState<"countries" | "cities">("cities");
 
   const handleAlignment = (_: React.MouseEvent<HTMLElement>, newMenu: "countries" | "cities") => {
@@ -30,7 +30,7 @@ const TrackingList: FC<ITrackingList> = ({ setSelectedLocation }) => {
             <Typography variant="subtitle2">COUNTRIES</Typography>
           </ToggleButton>
         </ToggleButtonGroup>
-        <TrackingListMenu option={menu} setSelectedLocation={setSelectedLocation} />
+        <TrackingListMenu option={menu} visitedItems={visitedItems} setSelectedLocation={setSelectedLocation} />
       </Box>
     </AnimatedDiv>
   );

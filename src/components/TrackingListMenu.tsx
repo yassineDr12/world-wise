@@ -15,16 +15,46 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import AnimatedDiv from "./AnimatedDiv";
 import { FC, useEffect, useState } from "react";
-import { visitedItems } from "../data/visitedList";
 import { VisitedListItem } from "../types/Data";
 import { ITrackingListMenu } from "../types/Components";
+import { keyframes } from "@mui/system";
+
+// ... (rest of the imports)
+
+const pulse = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+const NoItemsMessage = () => (
+  <Box display="flex" flexDirection="column" alignItems="center" mt={30} sx={{ animation: `${pulse} 2s infinite` }}>
+    <Typography variant="h5" mt={2} fontWeight="bold" color="primary">
+      Your adventure awaits!
+    </Typography>
+    <Typography variant="body1" mt={1} color="text.secondary" textAlign="center">
+      Start selecting places on the map to see them here.
+    </Typography>
+  </Box>
+);
 
 const renderCitiesList = ({
-  handleItemClick,
   theme,
+  visitedItems,
+  handleItemClick,
 }: {
-  handleItemClick: (item: VisitedListItem) => void;
   theme: Theme;
+  visitedItems: VisitedListItem[];
+  handleItemClick: (item: VisitedListItem) => void;
 }) => {
   return (
     <>
@@ -44,13 +74,13 @@ const renderCitiesList = ({
             primary={
               <Typography>
                 <Box component="span" fontWeight="bold" mr={1}>
-                  {item.cityIitials}
+                  {item.initials}
                 </Box>
                 {item.city}
               </Typography>
             }
           />
-          <Typography variant="body2">{item.visitedOn.toDateString()}</Typography>
+          <Typography variant="body2">{new Date(item.visitedOn).toDateString()}</Typography>
           <IconButton size="small" sx={{ color: theme.palette.primary.contrastText }}>
             <CloseIcon />
           </IconButton>
@@ -60,10 +90,14 @@ const renderCitiesList = ({
   );
 };
 
-const renderCountriesList = ({ theme }: { theme: Theme }) => {
+const renderCountriesList = ({ theme, visitedItems }: { theme: Theme; visitedItems: VisitedListItem[] }) => {
+  const uniqueCountries = Array.from(new Set(visitedItems.map((item) => item.country))).map(
+    (country) => visitedItems.find((item) => item.country === country)!
+  );
+
   return (
     <Grid container spacing={2}>
-      {visitedItems.map((item: VisitedListItem) => (
+      {uniqueCountries.map((item: VisitedListItem) => (
         <Grid item xs={6} key={item.country}>
           <Card
             sx={{
@@ -78,7 +112,7 @@ const renderCountriesList = ({ theme }: { theme: Theme }) => {
             }}
           >
             <Typography variant="h4" fontWeight="bold">
-              {item.countryInitials}
+              {item.initials}
             </Typography>
             <Typography variant="body2" textAlign="center">
               {item.country}
@@ -90,7 +124,7 @@ const renderCountriesList = ({ theme }: { theme: Theme }) => {
   );
 };
 
-const TrackingListMenu: FC<ITrackingListMenu> = ({ option, setSelectedLocation }) => {
+const TrackingListMenu: FC<ITrackingListMenu> = ({ option, visitedItems, setSelectedLocation }) => {
   const theme = useTheme();
   const [selectedItem, setSelectedItem] = useState<VisitedListItem | null>(null);
 
@@ -106,48 +140,62 @@ const TrackingListMenu: FC<ITrackingListMenu> = ({ option, setSelectedLocation }
     setSelectedItem(item);
   };
 
+  const menu = () => {
+    return (
+      <>
+        <List
+          sx={{
+            height: option === "countries" ? "585px" : "415px",
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              width: "8px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: theme.palette.primary.main,
+              borderRadius: "4px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "transparent",
+            },
+            scrollbarWidth: "thin",
+            scrollbarColor: `${theme.palette.primary.main} transparent`,
+          }}
+        >
+          {option === "cities"
+            ? renderCitiesList({ visitedItems, theme, handleItemClick })
+            : renderCountriesList({ visitedItems, theme })}
+        </List>
+        {selectedItem && (
+          <AnimatedDiv>
+            <Card sx={{ mt: 2, backgroundColor: "primary.main", color: "primary.contrastText" }}>
+              <CardContent>
+                <Typography variant="h6">{selectedItem.city}</Typography>
+                <Typography variant="body2">
+                  You went to {selectedItem.city} on {new Date(selectedItem.visitedOn).toDateString()}
+                </Typography>
+                <Typography variant="body2" mt={1}>
+                  {selectedItem.notes}
+                </Typography>
+                <Link href={selectedItem.wiki} target="_blank" rel="noopener">
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "primary.contrastText", textDecoration: "underline" }}
+                    mt={2}
+                  >
+                    Check out {selectedItem.city} on Wikipedia
+                  </Typography>
+                </Link>
+              </CardContent>
+            </Card>
+          </AnimatedDiv>
+        )}
+      </>
+    );
+  };
+
   return (
     <Box m={3} width="100%">
-      <List
-        sx={{
-          height: option === "countries" ? "585px" : "415px",
-          overflowY: "auto",
-          "&::-webkit-scrollbar": {
-            width: "8px",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: theme.palette.primary.main,
-            borderRadius: "4px",
-          },
-          "&::-webkit-scrollbar-track": {
-            backgroundColor: "transparent",
-          },
-          scrollbarWidth: "thin",
-          scrollbarColor: `${theme.palette.primary.main} transparent`,
-        }}
-      >
-        {option === "cities" ? renderCitiesList({ handleItemClick, theme }) : renderCountriesList({ theme })}
-      </List>
-      {selectedItem && (
-        <AnimatedDiv>
-          <Card sx={{ mt: 2, backgroundColor: "primary.main", color: "primary.contrastText" }}>
-            <CardContent>
-              <Typography variant="h6">{selectedItem.city}</Typography>
-              <Typography variant="body2">
-                You went to {selectedItem.city} on {selectedItem.visitedOn.toDateString()}
-              </Typography>
-              <Typography variant="body2" mt={1}>
-                {selectedItem.notes}
-              </Typography>
-              <Link href={selectedItem.wiki} target="_blank" rel="noopener">
-                <Typography variant="body2" sx={{ color: "primary.contrastText", textDecoration: "underline" }} mt={2}>
-                  Check out {selectedItem.city} on Wikipedia
-                </Typography>
-              </Link>
-            </CardContent>
-          </Card>
-        </AnimatedDiv>
-      )}
+      {visitedItems.length === 0 ? <NoItemsMessage /> : menu()}
     </Box>
   );
 };

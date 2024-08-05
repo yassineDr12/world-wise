@@ -6,15 +6,17 @@ import Background from "../components/Background";
 import useMapLocation from "../hooks/useMapLocation";
 import { VisitedListItem } from "../types/Data";
 import ItemForm from "../components/ItemForm";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const Tracker = () => {
   const [showMap, setShowMap] = useState<boolean>(false);
   const { selectedLocation, setSelectedLocation, locationDetails } = useMapLocation();
+  const [visitedItems, addItem] = useLocalStorage<VisitedListItem>("visitedItems", []);
   const [addItemFlag, setAddItemFlag] = useState<boolean>(false);
 
   const onSubmit = (item: VisitedListItem) => {
     setAddItemFlag(false);
-    console.log(item);
+    addItem(item);
   };
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const Tracker = () => {
                 setAddItemFlag={setAddItemFlag}
               />
             ) : (
-              <TrackingList setSelectedLocation={setSelectedLocation} />
+              <TrackingList visitedItems={visitedItems} setSelectedLocation={setSelectedLocation} />
             )}
           </Grid>
           <Grow in={showMap} timeout={1000}>

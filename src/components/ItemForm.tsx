@@ -2,11 +2,15 @@ import { FC, FormEvent, useState } from "react";
 import { IItemForm } from "../types/Components";
 import { Button, TextField, Box, Typography, useTheme } from "@mui/material";
 import AnimatedDiv from "./AnimatedDiv";
+import { getCode } from "country-list";
+
+const getCountryInitials = (countryName: string): string => {
+  const code = getCode(countryName);
+  return code ? code : countryName.substring(0, 2).toUpperCase();
+};
 
 const ItemForm: FC<IItemForm> = ({ selectedLocation, locationDetails, onSubmit, setAddItemFlag }) => {
   const theme = useTheme();
-  const [country, setCountry] = useState(locationDetails?.country || "");
-  const [city, setCity] = useState(locationDetails?.city || "");
   const [notes, setNotes] = useState("");
   const [visitedOn, setVisitedOn] = useState("");
 
@@ -14,19 +18,16 @@ const ItemForm: FC<IItemForm> = ({ selectedLocation, locationDetails, onSubmit, 
     e.preventDefault();
     onSubmit({
       id: crypto.randomUUID(),
-      country: locationDetails?.country || country,
-      city: locationDetails?.country || city,
-      countryInitials: country.slice(0, 2).toUpperCase(),
-      cityIitials: city.slice(0, 2).toUpperCase(),
+      country: locationDetails?.country || "Unknown",
+      city: locationDetails?.city || "Unknown",
+      initials: getCountryInitials(locationDetails?.country || "Unknown"),
       notes,
       visitedOn: new Date(visitedOn),
-      wiki: `https://en.wikipedia.org/wiki/${city},_${country}`,
+      wiki: `https://en.wikipedia.org/wiki/${locationDetails?.city},_${locationDetails?.country}`,
       lat: selectedLocation?.lat ?? 0,
       lng: selectedLocation?.lng ?? 0,
     });
     // Reset form fields
-    setCountry("");
-    setCity("");
     setNotes("");
     setVisitedOn("");
   };
@@ -37,22 +38,8 @@ const ItemForm: FC<IItemForm> = ({ selectedLocation, locationDetails, onSubmit, 
         <Typography variant="h6" gutterBottom>
           Add New Location
         </Typography>
-        <TextField
-          fullWidth
-          label="Country"
-          value={locationDetails?.country}
-          onChange={(e) => setCountry(e.target.value)}
-          margin="normal"
-          required
-        />
-        <TextField
-          fullWidth
-          label="City"
-          value={locationDetails?.city}
-          onChange={(e) => setCity(e.target.value)}
-          margin="normal"
-          required
-        />
+        <TextField fullWidth label="Country" value={locationDetails?.country || ""} margin="normal" disabled />
+        <TextField fullWidth label="City" value={locationDetails?.city || ""} margin="normal" disabled />
 
         <TextField
           fullWidth

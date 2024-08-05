@@ -7,8 +7,7 @@ export type VisitedListItem = MapLocation & {
   id: string;
   country: string;
   city: string;
-  countryInitials: string;
-  cityIitials: string;
+  initials: string;
   notes: string;
   visitedOn: Date;
   wiki: string;
