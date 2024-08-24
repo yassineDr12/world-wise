@@ -23,20 +23,33 @@ function useLocalStorage<T>(key: string, initialValue: T[]) {
 
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage.
-  const addItem = (item: T) => {
+  const addItem = (itemToAdd: T) => {
     try {
       // Save to local storage
       if (typeof window !== "undefined") {
         // Save state
-        setStoredItems((prevItems) => [...prevItems, item]);
-        window.localStorage.setItem(key, JSON.stringify([...storedItems, item]));
+        setStoredItems((prevItems) => [...prevItems, itemToAdd]);
+        window.localStorage.setItem(key, JSON.stringify([...storedItems, itemToAdd]));
       }
     } catch (error) {
       console.warn(`Error setting localStorage key "${key}":`, error);
     }
   };
 
-  return [storedItems, addItem] as [T[], (item: T) => void];
+  const removeItem = (itemToRemove: T) => {
+    try {
+      // Save to local storage
+      if (typeof window !== "undefined") {
+        // Save state
+        setStoredItems((prevItems) => prevItems.filter((item) => item !== itemToRemove));
+        window.localStorage.setItem(key, JSON.stringify(storedItems.filter((item) => item !== itemToRemove)));
+      }
+    } catch (error) {
+      console.warn(`Error removing item from localStorage key "${key}":`, error);
+    }
+  };
+
+  return [storedItems, addItem, removeItem] as [T[], (itemToAdd: T) => void, (itemToRemove: T) => void];
 }
 
 export default useLocalStorage;
