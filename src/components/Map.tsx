@@ -1,8 +1,7 @@
 import { useTheme } from "@emotion/react";
-import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from "react-leaflet";
 import styled from "@emotion/styled";
-import { Button, Theme } from "@mui/material";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { Theme } from "@mui/material";
 import { FC } from "react";
 import { IMap } from "../types/Components";
 
@@ -31,34 +30,6 @@ const Map: FC<IMap> = ({ selectedLocation, setAddItemFlag, locationDetails, setS
     });
     return null;
   }
-
-  const LocateButton = () => {
-    const map = useMap();
-
-    const handleLocate = () => {
-      map.locate().on("locationfound", function (e) {
-        map.flyTo(e.latlng, map.getZoom());
-        setSelectedLocation(e.latlng);
-      });
-    };
-
-    return (
-      <Button
-        variant="contained"
-        startIcon={<LocationOnIcon />}
-        onClick={handleLocate}
-        style={{
-          position: "absolute",
-          bottom: "20px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 1000,
-        }}
-      >
-        Locate Me
-      </Button>
-    );
-  };
 
   return (
     <StyledMapContainer
@@ -92,7 +63,6 @@ const Map: FC<IMap> = ({ selectedLocation, setAddItemFlag, locationDetails, setS
           </Popup>
         </Marker>
       )}
-      <LocateButton />
     </StyledMapContainer>
   );
 };
