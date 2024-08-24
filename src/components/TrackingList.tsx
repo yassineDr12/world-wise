@@ -3,9 +3,11 @@ import { FC, useState } from "react";
 import AnimatedDiv from "./AnimatedDiv";
 import TrackingListMenu from "./TrackingListMenu";
 import { ITrackingList } from "../types/Components";
+import { useVisitedItems } from "../contexts/VisitedItemsContext";
 
-const TrackingList: FC<ITrackingList> = ({ visitedItems, setSelectedLocation }) => {
+const TrackingList: FC<ITrackingList> = ({ setSelectedLocation }) => {
   const [menu, setMenu] = useState<"countries" | "cities">("cities");
+  const { visitedItems } = useVisitedItems();
 
   const handleAlignment = (_: React.MouseEvent<HTMLElement>, newMenu: "countries" | "cities") => {
     setMenu(newMenu);

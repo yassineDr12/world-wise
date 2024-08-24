@@ -14,6 +14,7 @@ import { ThemeProvider } from "@emotion/react";
 import { createTheme, CssBaseline, PaletteMode, useMediaQuery } from "@mui/material";
 import { ColorModeContext } from "./contexts/ThemeContext";
 import { getDesignTokens } from "./theme";
+import { VisitedItemsProvider } from "./contexts/VisitedItemsContext";
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -32,18 +33,20 @@ function App() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Header />
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Homepage />} />
-            <Route path="about" element={<About />} />
-            <Route path="pricing" element={<Pricing />} />
-            <Route path="tracker" element={<Tracker />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AnimatePresence>
-        <Footer />
+        <VisitedItemsProvider>
+          <CssBaseline />
+          <Header />
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Homepage />} />
+              <Route path="about" element={<About />} />
+              <Route path="pricing" element={<Pricing />} />
+              <Route path="tracker" element={<Tracker />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AnimatePresence>
+          <Footer />
+        </VisitedItemsProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

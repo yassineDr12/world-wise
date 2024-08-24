@@ -18,6 +18,7 @@ import { FC, useEffect, useState } from "react";
 import { VisitedListItem } from "../types/Data";
 import { ITrackingListMenu } from "../types/Components";
 import { keyframes } from "@mui/system";
+import { useVisitedItems } from "../contexts/VisitedItemsContext";
 
 // ... (rest of the imports)
 
@@ -51,10 +52,12 @@ const renderCitiesList = ({
   theme,
   visitedItems,
   handleItemClick,
+  removeVisitedItem,
 }: {
   theme: Theme;
   visitedItems: VisitedListItem[];
   handleItemClick: (item: VisitedListItem) => void;
+  removeVisitedItem: (itemToRemove: VisitedListItem) => void;
 }) => {
   return (
     <>
@@ -81,7 +84,11 @@ const renderCitiesList = ({
             }
           />
           <Typography variant="body2">{new Date(item.visitedOn).toDateString()}</Typography>
-          <IconButton size="small" sx={{ color: theme.palette.primary.contrastText }}>
+          <IconButton
+            size="small"
+            sx={{ color: theme.palette.primary.contrastText }}
+            onClick={() => removeVisitedItem(item)}
+          >
             <CloseIcon />
           </IconButton>
         </ListItem>
@@ -127,6 +134,7 @@ const renderCountriesList = ({ theme, visitedItems }: { theme: Theme; visitedIte
 const TrackingListMenu: FC<ITrackingListMenu> = ({ option, visitedItems, setSelectedLocation }) => {
   const theme = useTheme();
   const [selectedItem, setSelectedItem] = useState<VisitedListItem | null>(null);
+  const { removeVisitedItem } = useVisitedItems();
 
   useEffect(() => {
     option === "countries" && setSelectedItem(null);
@@ -162,7 +170,7 @@ const TrackingListMenu: FC<ITrackingListMenu> = ({ option, visitedItems, setSele
           }}
         >
           {option === "cities"
-            ? renderCitiesList({ visitedItems, theme, handleItemClick })
+            ? renderCitiesList({ visitedItems, theme, handleItemClick, removeVisitedItem })
             : renderCountriesList({ visitedItems, theme })}
         </List>
         {selectedItem && (
