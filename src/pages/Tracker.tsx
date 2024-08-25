@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import Map from "../components/Map";
-import { Grid, Paper, Grow } from "@mui/material";
+import { Grid, Paper, Grow, Button } from "@mui/material";
 import TrackingList from "../components/TrackingList";
 import Background from "../components/Background";
 import useMapLocation from "../hooks/useMapLocation";
-import { VisitedListItem } from "../types/Data";
+import { MapLocation, VisitedListItem } from "../types/Data";
 import ItemForm from "../components/ItemForm";
 import { useVisitedItems } from "../contexts/VisitedItemsContext";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const Tracker = () => {
   const [showMap, setShowMap] = useState<boolean>(false);
@@ -17,6 +18,27 @@ const Tracker = () => {
   const onSubmit = (item: VisitedListItem) => {
     setAddItemFlag(false);
     addVisitedItem(item);
+  };
+
+  const handleLocate = () => {
+    function success(position: { coords: { latitude: number; longitude: number } }) {
+      const userLocation: MapLocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+      setSelectedLocation(() => userLocation);
+      setAddItemFlag(() => true);
+    }
+
+    function error() {
+      console.log("Unable to retrieve your location");
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+      console.log("Geolocation not supported");
+    }
   };
 
   useEffect(() => {
@@ -55,6 +77,20 @@ const Tracker = () => {
           </Grow>
         </Grid>
       </Paper>
+      <Grow in={showMap} timeout={1000}>
+        <Button
+          variant="contained"
+          startIcon={<LocationOnIcon />}
+          onClick={handleLocate}
+          style={{
+            position: "absolute",
+            bottom: "10%",
+            left: "50%",
+          }}
+        >
+          Locate Me
+        </Button>
+      </Grow>
     </Background>
   );
 };
